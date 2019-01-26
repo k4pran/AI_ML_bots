@@ -7,7 +7,7 @@ from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import confusion_matrix
 
 # Get data
-dataset = pd.read_csv("datasets/pima_indians_diabetes.txt")
+dataset = pd.read_csv("../../datasets/pima_indians_diabetes.txt")
 x_data, y_data = dataset.iloc[:, :8], dataset.iloc[:, 8]
 
 # Feature scaling
@@ -20,8 +20,8 @@ x_train, x_test, y_train, y_test = train_test_split(x_data, y_data, test_size=0.
 
 # Create model
 model = keras.Sequential([
-    keras.layers.Dense(input_shape=(x_train.shape[1],), units=32, activation=tf.nn.relu),
-    keras.layers.Dense(units=2, activation=tf.nn.softmax)
+    keras.layers.Dense(input_shape=(x_train.shape[1],), units=32, activation=keras.activations.relu),
+    keras.layers.Dense(units=2, activation=keras.activations.softmax)
 ])
 
 model.compile(optimizer=tf.train.AdamOptimizer(learning_rate=0.001), loss='sparse_categorical_crossentropy', metrics=['accuracy'])

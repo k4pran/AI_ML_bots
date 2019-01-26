@@ -4,7 +4,20 @@ from tensorflow import keras
 import numpy as np
 import matplotlib.pyplot as plt
 
-# Plotting methods
+"""
+A pole is attached by an un-actuated joint to a cart, which moves along a frictionless track. 
+The system is controlled by applying a force of +1 or -1 to the cart. The pendulum starts upright, 
+and the goal is to prevent it from falling over. A reward of +1 is provided for every timestep 
+that the pole remains upright. The episode ends when the pole is more than 15 degrees from vertical, 
+or the cart moves more than 2.4 units from the center.
+
+This bot uses reinforcement learning with a deep q-learning network. It is given the state information
+as the state space and possible actions. After performing a given action in a given state, it is 
+provided with an award. It uses the current state, action in that state, the reward for performing that
+action in that state and the resulting next state to learn to optimize its' actions.
+"""
+
+# Plotting functions
 def plot_image(i, predictions_array, true_label, img):
     predictions_array, true_label, img = predictions_array[i], true_label[i], img[i]
     plt.grid(False)
