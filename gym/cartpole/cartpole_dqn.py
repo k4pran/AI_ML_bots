@@ -22,17 +22,26 @@ state_space = env.observation_space.shape[0]
 render_env = False
 memories = deque(maxlen=memory_max)
 
-logging_freq = 1
+snapshot_freq = 10
 save_model_freq = 50
 render_by_score_condition = 170  # Renders environment after this average score is reached
+model = None
 
-model = keras.Sequential([
-    keras.layers.Dense(input_shape=(state_space, ), units=24, activation=keras.activations.relu),
-    keras.layers.Dense(units=24, activation=keras.activations.relu),
-    keras.layers.Dense(units=action_space, activation=keras.activations.linear)
-])
 
-model.compile(optimizer=tf.train.AdamOptimizer(learning_rate=learning_rate), loss='mse')
+
+def init_agent(load_path=None):
+    global model
+
+    model = keras.Sequential([
+        keras.layers.Dense(input_shape=(state_space,), units=64, activation=keras.activations.relu),
+        keras.layers.Dense(units=32, activation=keras.activations.relu),
+        keras.layers.Dense(units=action_space, activation=keras.activations.linear)
+    ])
+
+    if load_path:
+        model.load_weights(load_path)
+
+    model.compile(optimizer=tf.train.AdamOptimizer(learning_rate=learning_rate), loss='mse')
 
 
 def act(state):
@@ -76,15 +85,25 @@ def memorize(state, action, reward, done, next_state):
     memories.append(episode)
 
 
+def save(episode):
+    model.save_weights("./saved_models/cartpole_model_episodes_{}".format(episode), overwrite=True)
+
+
+def load(path):
+    model.load_weights(path)
+
+
 # Initialise game
 def run_game(episodes, training=False):
     global render_env, epsilon_step
 
     scores = []
+    snapshots = []
     for episode in range(episodes):
 
         state = env.reset()
         state = np.array(state.reshape(1, state_space))
+
         score = 0
         done = False
         while not done:
@@ -111,16 +130,22 @@ def run_game(episodes, training=False):
 
         scores.append(score)
 
-        if (episode + 1) % logging_freq == 0:
+        if (episode + 1) % snapshot_freq == 0:
+            snapshot_avg = sum(scores[episode + 1 - snapshot_freq:]) / snapshot_freq
+            snapshots.append(snapshot_avg)
+
             avg = sum(scores) / len(scores)
-            print("Episode: {}/{} \t Last score: {:.2f} \t Average Score: {:.2f} \t Epsilon: {:.4f}".format(episode + 1, episodes, score, avg, epsilon))
+            print("Episode: {}/{} \t Last score: {:.2f} \t Snapshot Avg: {} \t Total Avg: {:.2f} \t Epsilon: {:.4f}"
+                  .format(episode + 1, episodes, score, snapshot_avg, avg, epsilon))
 
             # After average score hits a target env will be rendered and training stopped
-            if avg >= render_by_score_condition:
+            if snapshot_avg >= render_by_score_condition:
                 render_env = True
                 training = False
+            save(episode)
 
 
 if __name__ == "__main__":
     print("Starting game...")
+    init_agent()
     run_game(1000, True)
