@@ -1,5 +1,7 @@
 import gym
 import numpy as np
+import matplotlib.pyplot as plt
+
 
 gym_id = "Blackjack-v0"
 env = gym.make(gym_id)
@@ -62,15 +64,29 @@ def run_game(player, episodes, training=True):
         print("Draw rate: {}".format(get_result_rate(sum(results), results[1])))
         print("Loss rate: {}\n\n".format(get_result_rate(sum(results), results[0])))
 
+    return results
+
 
 def get_result_rate(total, result_count):
     if result_count == 0:
         return 0
     return result_count / total
 
+def get_autopct_perc(values):
+    def get_perc(value):
+        return '{p:.2f}%'.format(p=value)
+    return get_perc
+
 
 if __name__ == "__main__":
     player = Player()
-    run_game(player, 100000)
-    run_game(player, 1000, training=False)
-    print()
+    training_results = run_game(player, 10000)
+    test_results = run_game(player, 10000, training=False)
+
+    plt.subplot(1, 2, 1)
+    plt.pie(training_results, labels=["Loss", "Draw", "Win"], autopct=get_autopct_perc(training_results))
+    plt.title("Training Results")
+    plt.subplot(1, 2, 2)
+    plt.pie(test_results, labels=["Loss", "Draw", "Win"], autopct=get_autopct_perc(test_results))
+    plt.title("Test Results")
+    plt.show()
