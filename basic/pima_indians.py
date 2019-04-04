@@ -7,7 +7,7 @@ from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import confusion_matrix
 
 # Get data
-dataset = pd.read_csv("../../datasets/pima_indians_diabetes.txt")
+dataset = pd.read_csv("../datasets/pima_indians_diabetes.csv")
 x_data, y_data = dataset.iloc[:, :8], dataset.iloc[:, 8]
 
 # Feature scaling
