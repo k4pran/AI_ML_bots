@@ -1,6 +1,6 @@
 import torch
 import numpy as np
-from open_ai_gym.space_invaders.model import DQNNetwork
+from reinforcement_learning.space_invaders.model import DQNNetwork
 
 torch.set_default_tensor_type('torch.DoubleTensor')
 

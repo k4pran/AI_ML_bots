@@ -1,6 +1,6 @@
 import gym
 import numpy as np
-from open_ai_gym.space_invaders.dqn_agent import DQNAgent
+from reinforcement_learning.space_invaders.dqn_agent import DQNAgent
 
 if __name__ == '__main__':
     env = gym.make('SpaceInvaders-v0')

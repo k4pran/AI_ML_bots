@@ -8,19 +8,25 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 
-def split(X, y):
-    x_1, x_t2, y_1, y_2 = train_test_split(X, y, test_size=0.2)
-    return torch.Tensor(x_1), torch.Tensor(x_t2), torch.Tensor(y_1), torch.Tensor(y_2)
-
-
+# Load dataset
 dataset = pd.read_csv("../datasets/iris.csv")
 
+# Split features / labels
 X = dataset.iloc[:, :-1]
 y = dataset.iloc[:, -1]
 
+# Encode labels
 lb = LabelBinarizer()
 y_encoded = lb.fit_transform(y)
-x_train, x_test, y_train, y_test = split(X.values, y_encoded)
+
+# Split train / test sets
+x_train, x_test, y_train, y_test = train_test_split(X.values, y_encoded, test_size=0.2)
+
+x_train = torch.tensor(x_train, dtype=torch.float)
+x_test = torch.tensor(x_test, dtype=torch.float)
+y_train = torch.tensor(y_train, dtype=torch.float)
+y_test = torch.tensor(y_test, dtype=torch.float)
+
 
 model = torch.nn.Sequential(
     torch.nn.Linear(x_train.shape[1], 32),

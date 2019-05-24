@@ -28,7 +28,6 @@ render_by_score_condition = 170  # Renders environment after this average score 
 model = None
 
 
-
 def init_agent(load_path=None):
     global model
 
