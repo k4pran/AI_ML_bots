@@ -13,7 +13,7 @@ def split(X, y):
     return torch.Tensor(x_1), torch.Tensor(x_t2), torch.Tensor(y_1), torch.Tensor(y_2)
 
 
-dataset = pd.read_csv("../datasets/iris.csv")
+dataset = pd.read_csv("../../datasets/iris.csv")
 
 X = dataset.iloc[:, :-1]
 y = dataset.iloc[:, -1]
@@ -51,7 +51,8 @@ print("\n\n")
 sns.set_style("darkgrid")
 loss_df = pd.DataFrame({'Step': range(500), 'Loss': losses})
 ax = sns.lineplot(x='Step', y='Loss', data=loss_df)
-plt.show()
+fig = ax.get_figure()
+fig.savefig('./output/iris-plot.png', dpi=fig.dpi)
 
 # Test
 y_pred = model(x_test)
@@ -71,7 +72,7 @@ print("Accuracy: {:.4f}".format(accuracy))
 conf_matrix = confusion_matrix(actual_labels, pred_labels)
 labels = list(set(y))
 df_conf_matrix = pd.DataFrame(conf_matrix, index=labels, columns=labels)
-plt.figure(figsize=(10, 7))
-sns.set(font_scale=1.4)
+fig = plt.figure(figsize=(10, 7))
+sns.set(font_scale=1)
 sns.heatmap(df_conf_matrix, annot=True, annot_kws={"size": 16})
-plt.show()
+fig.savefig('./output/iris-heatmap.png', dpi=fig.dpi)
