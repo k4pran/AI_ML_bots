@@ -7,9 +7,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 from IPython.display import HTML
+import os
 
-from gans.pokegan import *
-from gans.pokegan.image_transformation import get_dataset, get_dataloader
+from . import *
+from .image_transformation import get_dataset, get_dataloader
 
 
 def weights_init(m):

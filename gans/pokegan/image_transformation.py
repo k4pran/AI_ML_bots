@@ -5,7 +5,7 @@ import torchvision.utils as vutils
 import numpy as np
 import matplotlib.pyplot as plt
 
-from gans.pokegan import *
+from . import *
 
 
 def get_dataset(transformation=None):

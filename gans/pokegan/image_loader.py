@@ -2,8 +2,8 @@ import os
 import itertools
 import logging
 
-from gans.pokegan import *
-from gans.pokegan.data_not_found_exception import DataNotFoundException
+from . import *
+from .data_not_found_exception import DataNotFoundException
 
 logging.basicConfig(level=logging.INFO)
 
