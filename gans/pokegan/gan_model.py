@@ -8,8 +8,8 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 from IPython.display import HTML
 
-from src import *
-from src.image_transformation import get_dataset, get_dataloader
+from gans.pokegan import *
+from gans.pokegan.image_transformation import get_dataset, get_dataloader
 
 
 def weights_init(m):
@@ -167,9 +167,9 @@ for epoch in range(EPOCHS):
         iterations += 1
 
 #%%capture
-fig = plt.figure(figsize=(8,8))
+fig = plt.figure(figsize=(8, 8))
 plt.axis("off")
-ims = [[plt.imshow(np.transpose(i,(1,2,0)), animated=True)] for i in generated_images]
+ims = [[plt.imshow(np.transpose(i,(1, 2, 0)), animated=True)] for i in generated_images]
 ani = animation.ArtistAnimation(fig, ims, interval=1000, repeat_delay=1000, blit=True)
 
 HTML(ani.to_jshtml())
@@ -178,14 +178,14 @@ HTML(ani.to_jshtml())
 real_batch = next(iter(dataloader))
 
 # Plot the real images
-plt.figure(figsize=(15,15))
-plt.subplot(1,2,1)
+plt.figure(figsize=(15, 15))
+plt.subplot(1, 2, 1)
 plt.axis("off")
 plt.title("Real Images")
-plt.imshow(np.transpose(vutils.make_grid(real_batch[0].to(device)[:64], padding=5, normalize=True).cpu(),(1,2,0)))
+plt.imshow(np.transpose(vutils.make_grid(real_batch[0].to(device)[:64], padding=5, normalize=True).cpu(), (1, 2, 0)))
 
 # Plot the fake images from the last epoch
-plt.subplot(1,2,2)
+plt.subplot(1, 2, 2)
 plt.axis("off")
 plt.title("Fake Images")
 plt.imshow(np.transpose(generated_images[-1], (1, 2, 0)))
