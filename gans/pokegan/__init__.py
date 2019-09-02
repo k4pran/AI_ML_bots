@@ -1,4 +1,4 @@
-POKEMON_DATA_DIR = "./pokegan/pokemon-data"
+POKEMON_DATA_DIR = "./pokegan/all-pokemon"
 BATCH_SIZE = 128
 IMAGE_SIZE = 64
 COLOR_CHANNELS = 3
